@@ -2,6 +2,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import {TypeOrmModule} from '@nestjs/typeorm';
+import {UsersController} from "./users/controllers/users.controller";
+import {UsersService} from "./users/services/users.service";
+import {User} from "./users/user.entity";
+import {Project} from "./projects/project.entity";
+import {ProjectUser} from "./project-users/project-user.entity";
+import {Event} from "./events/event.entity";
+import {UsersModule} from "./users/users.module";
 
 
 @Module({
@@ -16,11 +23,12 @@ import {TypeOrmModule} from '@nestjs/typeorm';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [],
+        entities: [User, Project, ProjectUser, Event],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
+      UsersModule
   ],
   controllers: [],
   providers: [],
