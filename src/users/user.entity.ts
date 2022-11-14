@@ -6,6 +6,7 @@ export class User extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string
 
+    @Index({unique: true})
     @Column()
     username: string
 
@@ -13,7 +14,7 @@ export class User extends BaseEntity {
     @Column()
     email: string
 
-    @Column({select: false})
+    @Column()
     password: string
 
     @Column()

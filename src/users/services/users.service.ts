@@ -30,13 +30,9 @@ export class UsersService {
         return await User.findOne({where: {email: email}})
     }
 
-    // async login(userProps: UserDto) {
-    //     const user = await User.findOne(userProps.email)
-    //     return await User.findOne({
-    //         where: {
-    //             email: userProps.email,
-    //             password: userProps.password
-    //         }
-    //     });
-    // }
+    async findMe(email: string): Promise<any | undefined> {
+        const user = await User.findOne({where: {email: email}});
+        const {password, ...result} = user;
+        return result;
+    }
 }
