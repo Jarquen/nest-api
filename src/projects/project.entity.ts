@@ -1,13 +1,13 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, BaseEntity} from 'typeorm';
 
 @Entity()
-export class Project {
+export class Project extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: string
 
     @Column()
     name: string
 
-    @Column()
+    @Column('uuid')
     referringEmployeeId: string
 }

@@ -9,6 +9,7 @@ import {Project} from "./projects/project.entity";
 import {ProjectUser} from "./project-users/project-user.entity";
 import {Event} from "./events/event.entity";
 import {UsersModule} from "./users/users.module";
+import {ProjectsModule} from "./projects/projects.module";
 
 
 @Module({
@@ -28,7 +29,8 @@ import {UsersModule} from "./users/users.module";
       }),
       inject: [ConfigService],
     }),
-      UsersModule
+      UsersModule,
+      ProjectsModule
   ],
   controllers: [],
   providers: [],

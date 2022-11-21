@@ -1,13 +1,14 @@
-import {Injectable} from "@nestjs/common";
+import {BadRequestException, Injectable, NotFoundException} from "@nestjs/common";
 import {User} from '../user.entity'
 import {CreateUserDto} from "../dto/create-user.dto";
 import {UserDto} from "../dto/user.dto";
 import * as bcrypt from 'bcrypt';
+import {isUUID} from "class-validator";
 
 @Injectable()
 export class UsersService {
 
-    async findAll() {
+    async findAll(): Promise<User[]> {
         const user = User.find();
         return user;
     }
@@ -28,6 +29,15 @@ export class UsersService {
 
     async findOne(email: string): Promise<User | undefined> {
         return await User.findOne({where: {email: email}})
+    }
+
+    async findById(id: string): Promise<User | undefined> {
+        if (!isUUID(id)) throw new BadRequestException('Invalid id uuid')
+        const user = await User.findOne({where: {id: id}})
+        if (!user) {
+            throw new NotFoundException('Invalid id');
+        }
+        return user;
     }
 
     async findMe(email: string): Promise<any | undefined> {
