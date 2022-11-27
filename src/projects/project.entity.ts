@@ -1,8 +1,9 @@
-import {Entity, Column, PrimaryGeneratedColumn, BaseEntity} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, BaseEntity, JoinColumn, ManyToOne} from 'typeorm';
+import {User} from "../users/user.entity";
 
 @Entity()
 export class Project extends BaseEntity{
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id: string
 
     @Column()
@@ -10,4 +11,8 @@ export class Project extends BaseEntity{
 
     @Column('uuid')
     referringEmployeeId: string
+
+    @ManyToOne(() => User)
+    @JoinColumn()
+    referringEmployee: User
 }

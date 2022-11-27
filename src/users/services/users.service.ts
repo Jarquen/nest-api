@@ -14,7 +14,7 @@ export class UsersService {
     }
 
     async create(userProps: CreateUserDto) {
-        const {email, username, password} = userProps;
+        const {email, username, password, role} = userProps;
 
         const salt = 10;
         const hashedPassword = await bcrypt.hash(password, salt)
@@ -23,6 +23,7 @@ export class UsersService {
         user.email = email;
         user.username = username;
         user.password = hashedPassword;
+        if(role) user.role = role;
         await user.save();
         return user;
     }

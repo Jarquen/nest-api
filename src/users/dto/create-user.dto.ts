@@ -12,4 +12,6 @@ export class CreateUserDto {
     @IsNotEmpty()
     @Length(8)
     password: string
+
+    role?: 'Employee' | 'Admin' | 'ProjectManager'
 }
