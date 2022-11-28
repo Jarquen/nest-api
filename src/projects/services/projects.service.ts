@@ -7,11 +7,11 @@ import {User} from "../../users/user.entity";
 export class ProjectsService {
 
     async findAll(): Promise<Project[]> {
-        return Project.find({relations: ['referringEmployeeId']});
+        return Project.find({relations: ['referringEmployee']});
     }
 
     async findWhereIsConcern(id: string): Promise<Project[]> {
-        return Project.find({where: {id: id}, relations: ['referringEmployeeId']});
+        return Project.find({where: {referringEmployeeId: id}, relations: ['referringEmployee']});
     }
 
     async findOne(id: string): Promise<Project> {

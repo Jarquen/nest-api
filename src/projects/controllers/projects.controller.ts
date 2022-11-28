@@ -32,8 +32,10 @@ export class ProjectsController {
     @Get(':id')
     async findOne(@Req() req, @Param('id') id: string) {
         if (req.user.role === 'Admin' || req.user.role === 'ProjectManager') {
+            console.log('test')
             return await this.projectsService.findOne(id);
         } else {
+            console.log('pass')
             return await this.projectsService.findOneWhereIsConcern(id, req.user.id);
         }
 

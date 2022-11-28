@@ -1,7 +1,6 @@
 import {BadRequestException, Injectable, NotFoundException} from "@nestjs/common";
 import {User} from '../user.entity'
 import {CreateUserDto} from "../dto/create-user.dto";
-import {UserDto} from "../dto/user.dto";
 import * as bcrypt from 'bcrypt';
 import {isUUID} from "class-validator";
 
@@ -13,7 +12,7 @@ export class UsersService {
         return user;
     }
 
-    async create(userProps: CreateUserDto) {
+    async create(userProps: CreateUserDto): Promise<User> {
         const {email, username, password, role} = userProps;
 
         const salt = 10;
@@ -23,7 +22,7 @@ export class UsersService {
         user.email = email;
         user.username = username;
         user.password = hashedPassword;
-        if(role) user.role = role;
+        if (role) user.role = role;
         await user.save();
         return user;
     }
@@ -33,7 +32,7 @@ export class UsersService {
     }
 
     async findById(id: string): Promise<User | undefined> {
-        if (!isUUID(id)) throw new BadRequestException('Invalid id uuid')
+        if (!isUUID(id)) throw new BadRequestException('Invalid id uuid');
         const user = await User.findOne({where: {id: id}})
         if (!user) {
             throw new NotFoundException('Invalid id');
