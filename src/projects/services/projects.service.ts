@@ -2,6 +2,7 @@ import {Injectable, NotFoundException, UnauthorizedException} from "@nestjs/comm
 import {Project} from "../project.entity";
 import {CreateProjectDto} from "../dto/create-project.dto";
 import {User} from "../../users/user.entity";
+import {ProjectUser} from "../../project-users/project-user.entity";
 
 @Injectable()
 export class ProjectsService {
@@ -14,6 +15,13 @@ export class ProjectsService {
         return Project.find({where: {referringEmployeeId: id}, relations: ['referringEmployee']});
     }
 
+    // async findProjectUser(id: string) {
+    //     const projectUser = await ProjectUser.find({where: {userId : id}})
+    //     // if (projectUser) {
+    //     //     return await Project.find({where: {id: projectUser.id}})
+    //     // }
+    // }
+
     async findOne(id: string): Promise<Project> {
         const project = Project.findOne({where: {id: id}});
         if (!project) throw new NotFoundException('Invalid id');
@@ -23,7 +31,7 @@ export class ProjectsService {
     async findOneWhereIsConcern(id: string, employee: string): Promise<Project> {
         const project = Project.findOne({
             where: {id: id, referringEmployeeId: employee},
-            relations: ['referringEmployeeId']
+            relations: ['referringEmployee']
         });
         if (!project) throw new NotFoundException('Invalid id');
         return project;

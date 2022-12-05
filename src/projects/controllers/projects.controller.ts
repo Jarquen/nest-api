@@ -1,8 +1,19 @@
-import {Body, Controller, Get, Param, Post, Req, UnauthorizedException, UseGuards} from "@nestjs/common";
+import {
+    BadRequestException,
+    Body,
+    Controller, ForbiddenException,
+    Get, NotFoundException,
+    Param,
+    Post,
+    Req,
+    UnauthorizedException,
+    UseGuards
+} from "@nestjs/common";
 import {ProjectsService} from "../services/projects.service";
 import {CreateProjectDto} from "../dto/create-project.dto";
 import {Project} from "../project.entity";
 import {JwtAuthGuard} from "../../auth/guards/jwt-auth.guard";
+import {isUUID} from "class-validator";
 
 @Controller('projects/')
 export class ProjectsController {
@@ -31,12 +42,17 @@ export class ProjectsController {
     @UseGuards(JwtAuthGuard)
     @Get(':id')
     async findOne(@Req() req, @Param('id') id: string) {
+        if (!isUUID(id)) throw new BadRequestException('Invalid id uuid');
         if (req.user.role === 'Admin' || req.user.role === 'ProjectManager') {
-            console.log('test')
-            return await this.projectsService.findOne(id);
+            const projectService = await this.projectsService.findOne(id);
+            if (projectService !== null) {
+                return projectService;
+            } else {
+                throw new NotFoundException("This project don't exist");
+            }
         } else {
-            console.log('pass')
-            return await this.projectsService.findOneWhereIsConcern(id, req.user.id);
+            // return await this.projectsService.findOneWhereIsConcern(id, req.user.id);
+            throw new ForbiddenException("user not in the project")
         }
 
     }

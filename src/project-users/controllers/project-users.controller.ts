@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, Req, UnauthorizedException, UseGuards} from "@nestjs/common";
+import {Body, Controller, Get, Param, Post, Req, UnauthorizedException, UseGuards} from "@nestjs/common";
 import {ProjectUsersService} from "../services/project-users.service";
 import {JwtAuthGuard} from "../../auth/guards/jwt-auth.guard";
 import {ProjectUser} from "../project-user.entity";
@@ -25,6 +25,16 @@ export class ProjectUsersController {
             return await this.projectUserService.create(createProjectUser);
         } else {
             throw new UnauthorizedException("You don't have the permissions to do this");
+        }
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get(':id')
+    async findOne(@Req() req,@Param('id') id: string) {
+        if (req.user.role === 'Admin' || req.user.role === 'ProjectManager') {
+            return await this.projectUserService.findOne(id)
+        } else {
+            return await this.projectUserService.findOneWhereConcerned(id, req.user.id)
         }
     }
 }

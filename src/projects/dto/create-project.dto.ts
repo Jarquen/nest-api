@@ -5,5 +5,5 @@ export class CreateProjectDto {
     name: string;
 
     @IsNotEmpty()
-    referringEmployeeId
+    referringEmployeeId: string;
 }
