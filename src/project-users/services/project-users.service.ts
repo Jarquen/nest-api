@@ -3,6 +3,7 @@ import {ProjectUser} from "../project-user.entity";
 import {CreateProjectUsersDto} from "../dto/create-project-users.dto";
 import {User} from "../../users/user.entity";
 import {Project} from "../../projects/project.entity";
+import dayjs from "dayjs";
 
 @Injectable()
 export class ProjectUsersService {
@@ -33,19 +34,15 @@ export class ProjectUsersService {
         const user = await User.findOne({where: {id: userId}});
         if (user === null) throw new NotFoundException("This user don't exist");
 
-        // console.log(isAffected)
-
-        // if (isAffected.startDate > startDate && isAffected.endDate < endDate) {
-        //     throw new ConflictException("This user is already on an other project");
-        // }
-        // else if (isAffected.startDate.getDate() > startDate.getDate() && isAffected.endDate.getDate() > endDate.getDate()){
-        //     throw new ConflictException("This user is already on an other project");
-        // }
-        // else if (isAffected.startDate.getDate() === startDate.getDate() && isAffected.endDate.getDate() === endDate.getDate()) {
-        //     throw new ConflictException("This user is already on an other project");
-        // }
-
-        if (isAffected) throw new ConflictException("This user is already on an other project");
+        // if (isAffected) console.log(isAffected.endDate.getTime(), endDate.getTime())
+        // if (isAffected) throw new ConflictException("This user is already on an other project");
+        if (isAffected && isAffected.startDate.getTime() <= Date.parse(startDate.toString()) && isAffected.endDate.getTime() <= Date.parse(endDate.toString())) {
+            throw new ConflictException("This user is already on an other project");
+        } else if (isAffected && isAffected.startDate.getTime() <= Date.parse(startDate.toString()) && isAffected.endDate.getTime() >= Date.parse(endDate.toString())) {
+            throw new ConflictException("This user is already on an other project");
+        } else if (isAffected && isAffected.startDate.getTime() >= Date.parse(startDate.toString()) && isAffected.endDate.getTime() >= Date.parse(endDate.toString())) {
+            throw new ConflictException("This user is already on an other project");
+        }
 
         const projectUser = ProjectUser.create();
         projectUser.startDate = startDate;

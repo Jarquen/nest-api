@@ -1,7 +1,8 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn} from 'typeorm';
+import {User} from "../users/user.entity";
 
 @Entity()
-export class Event {
+export class Event extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: string
 
@@ -19,4 +20,8 @@ export class Event {
 
     @Column()
     userId: string
+
+    @ManyToOne(() => User)
+    @JoinColumn()
+    user: User
 }

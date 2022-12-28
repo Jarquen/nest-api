@@ -51,9 +51,7 @@ export class ProjectsController {
                 throw new NotFoundException("This project don't exist");
             }
         } else {
-            // return await this.projectsService.findOneWhereIsConcern(id, req.user.id);
-            throw new ForbiddenException("user not in the project")
+            return await this.projectsService.findProjectUser(req.user.id, id);
         }
-
     }
 }
