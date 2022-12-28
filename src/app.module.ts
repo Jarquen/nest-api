@@ -11,6 +11,7 @@ import {Event} from "./events/event.entity";
 import {UsersModule} from "./users/users.module";
 import {ProjectsModule} from "./projects/projects.module";
 import {ProjectUsersModule} from "./project-users/project-users.module";
+import {EventsModule} from "./events/events.module";
 
 
 @Module({
@@ -32,7 +33,8 @@ import {ProjectUsersModule} from "./project-users/project-users.module";
     }),
       UsersModule,
       ProjectsModule,
-      ProjectUsersModule
+      ProjectUsersModule,
+      EventsModule
   ],
   controllers: [],
   providers: [],

@@ -3,7 +3,7 @@ import {User} from "../users/user.entity";
 
 @Entity()
 export class Event extends BaseEntity{
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id: string
 
     @Column()

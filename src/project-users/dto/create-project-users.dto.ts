@@ -1,10 +1,12 @@
-import {IsNotEmpty} from "class-validator";
+import {IsDate, IsNotEmpty} from "class-validator";
 
 export class CreateProjectUsersDto {
     @IsNotEmpty()
+    @IsDate()
     startDate: Date
 
     @IsNotEmpty()
+    @IsDate()
     endDate: Date
 
     @IsNotEmpty()
