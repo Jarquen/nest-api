@@ -3,7 +3,7 @@ import {Project} from "../project.entity";
 import {CreateProjectDto} from "../dto/create-project.dto";
 import {User} from "../../users/user.entity";
 import {ProjectUser} from "../../project-users/project-user.entity";
-import {Any, In} from "typeorm";
+import {Any} from "typeorm";
 
 @Injectable()
 export class ProjectsService {
@@ -14,7 +14,6 @@ export class ProjectsService {
 
     async findWhereIsConcern(id: string): Promise<Project[]> {
         const projectUser = await ProjectUser.find({select: {projectId: true}, where: {userId: id}});
-        if (projectUser === null) throw new UnauthorizedException("You don't have project");
 
         const projectId = [];
         projectUser.map((project) => projectId.push(project.projectId));
