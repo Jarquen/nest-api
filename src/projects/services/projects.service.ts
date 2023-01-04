@@ -9,31 +9,17 @@ import {Any, In} from "typeorm";
 export class ProjectsService {
 
     async findAll(): Promise<Project[]> {
-        return Project.find({relations: ['referringEmployee']});
+        return await Project.find({relations: ['referringEmployee']});
     }
 
     async findWhereIsConcern(id: string): Promise<Project[]> {
         const projectUser = await ProjectUser.find({select: {projectId: true}, where: {userId: id}});
+        if (projectUser === null) throw new UnauthorizedException("You don't have project");
 
         const projectId = [];
-        projectUser.map((id) => projectId.push(id.projectId));
+        projectUser.map((project) => projectId.push(project.projectId));
 
-        return await Project.findBy({id: In(projectId)});
-
-        // let projectId = []
-        // const result = []
-        //
-        // const projectUser = await ProjectUser.find({where: {userId: id}})
-        //
-        // if (projectUser) projectUser.forEach((projectUser) => projectId.push(projectUser.projectId))
-        //
-        // for (const id of projectId) {
-        //     const project = await Project.find({where: {id: id}, relations: ['referringEmployee']});
-        //     result.push(project);
-        // }
-        //
-        // console.log(result, projectUser)
-        // return result[0];
+        return await Project.find({where: {id: Any(projectId)}});
     }
 
     async findProjectUser(userId: string, projectId: string) {
@@ -48,15 +34,6 @@ export class ProjectsService {
 
     async findOne(id: string): Promise<Project> {
         const project = Project.findOne({where: {id: id}});
-        if (!project) throw new NotFoundException('Invalid id');
-        return project;
-    }
-
-    async findOneWhereIsConcern(id: string, employee: string): Promise<Project> {
-        const project = Project.findOne({
-            where: {id: id, referringEmployeeId: employee},
-            relations: ['referringEmployee']
-        });
         if (!project) throw new NotFoundException('Invalid id');
         return project;
     }

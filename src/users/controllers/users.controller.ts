@@ -41,4 +41,10 @@ export class UsersController {
     async findOne(@Param('id') id: string) {
         return await this.usersService.findById(id)
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Get(':id/meal-vouchers/:month')
+    async getMealVouchers(@Param('id') id: string, @Param('month') month: number) {
+        return await this.usersService.findMealVouchers(id, month)
+    }
 }

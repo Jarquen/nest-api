@@ -30,9 +30,9 @@ export class EventsController {
     @Post(':id/validate')
     async validate(@Req() req, @Param('id') id: string): Promise<Event> {
         if (req.user.role === "Admin" || req.user.role === "ProjectManager") {
-            return await this.eventsService.validation(id, true);
+            return await this.eventsService.validation(id, true, req.user);
         } else {
-            throw new UnauthorizedException("An employee doesn't have the permission to validate an event");
+            throw new UnauthorizedException("An employee doesn't have the permission to decline an event");
         }
     }
 
@@ -40,7 +40,7 @@ export class EventsController {
     @Post(':id/decline')
     async decline(@Req() req, @Param('id') id: string): Promise<Event> {
         if (req.user.role === "Admin" || req.user.role === "ProjectManager") {
-            return await this.eventsService.validation(id, false);
+            return await this.eventsService.validation(id, false, req.user);
         } else {
             throw new UnauthorizedException("An employee doesn't have the permission to decline an event");
         }

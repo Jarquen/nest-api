@@ -4,6 +4,7 @@ import {CreateProjectUsersDto} from "../dto/create-project-users.dto";
 import {User} from "../../users/user.entity";
 import {Project} from "../../projects/project.entity";
 import dayjs from "dayjs";
+import {LessThanOrEqual, MoreThanOrEqual} from "typeorm";
 
 @Injectable()
 export class ProjectUsersService {
@@ -34,8 +35,6 @@ export class ProjectUsersService {
         const user = await User.findOne({where: {id: userId}});
         if (user === null) throw new NotFoundException("This user don't exist");
 
-        // if (isAffected) console.log(isAffected.endDate.getTime(), endDate.getTime())
-        // if (isAffected) throw new ConflictException("This user is already on an other project");
         if (isAffected && isAffected.startDate.getTime() <= Date.parse(startDate.toString()) && isAffected.endDate.getTime() <= Date.parse(endDate.toString())) {
             throw new ConflictException("This user is already on an other project");
         } else if (isAffected && isAffected.startDate.getTime() <= Date.parse(startDate.toString()) && isAffected.endDate.getTime() >= Date.parse(endDate.toString())) {
@@ -53,4 +52,35 @@ export class ProjectUsersService {
 
         return projectUser;
     }
+
+    // async create(projectUsersProps: CreateProjectUsersDto): Promise<ProjectUser> {
+    //     const {startDate, endDate, userId, projectId} = projectUsersProps;
+    //
+    //     const isAffected1 = await ProjectUser.findOne({where: {userId: userId, startDate: LessThanOrEqual(startDate), endDate: LessThanOrEqual(startDate)}});
+    //     const isAffected2 = await ProjectUser.findOne({where: {userId: userId, startDate: LessThanOrEqual(startDate), endDate: MoreThanOrEqual(endDate)}});
+    //     const isAffected3 = await ProjectUser.findOne({where: {userId: userId, startDate: MoreThanOrEqual(endDate), endDate: MoreThanOrEqual(endDate)}});
+    //
+    //     const project = await Project.findOne({where: {id: projectId}});
+    //     if (project === null) throw new NotFoundException("This project don't exist");
+    //
+    //     const user = await User.findOne({where: {id: userId}});
+    //     if (user === null) throw new NotFoundException("This user don't exist");
+    //
+    //     if (isAffected1) {
+    //         throw new ConflictException("This user is already on an other project");
+    //     } else if (isAffected2) {
+    //         throw new ConflictException("This user is already on an other project");
+    //     } else if (isAffected3) {
+    //         throw new ConflictException("This user is already on an other project");
+    //     }
+    //
+    //     const projectUser = ProjectUser.create();
+    //     projectUser.startDate = startDate;
+    //     projectUser.endDate = endDate;
+    //     projectUser.userId = userId;
+    //     projectUser.projectId = projectId;
+    //     await projectUser.save();
+    //
+    //     return projectUser;
+    // }
 }

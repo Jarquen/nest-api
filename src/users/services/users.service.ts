@@ -3,13 +3,16 @@ import {User} from '../user.entity'
 import {CreateUserDto} from "../dto/create-user.dto";
 import * as bcrypt from 'bcrypt';
 import {isUUID} from "class-validator";
+import {Event} from "../../events/event.entity";
+import {Between} from "typeorm";
+
+const dayjs = require('dayjs')
 
 @Injectable()
 export class UsersService {
 
     async findAll(): Promise<User[]> {
-        const user = User.find();
-        return user;
+        return User.find();
     }
 
     async create(userProps: CreateUserDto): Promise<User> {
@@ -40,9 +43,23 @@ export class UsersService {
         return user;
     }
 
-    async findMe(email: string): Promise<any | undefined> {
-        const user = await User.findOne({where: {email: email}});
-        const {password, ...result} = user;
-        return result;
+    async findMealVouchers(id: string, month: number): Promise<number> {
+        const NumberOfDays = dayjs().month(month).daysInMonth();
+        const DayOfMonth = dayjs().month(month).toDate();
+
+        let firstDayOfMonth = dayjs(DayOfMonth).startOf('month');
+        const lastDayOfMonth = dayjs(DayOfMonth).endOf('month');
+
+        const numberOfEvent = await Event.count({where: {userId: id, date: Between(firstDayOfMonth.toDate(), lastDayOfMonth.toDate())}});
+
+        let dayOfWork = 0;
+        for (let i = 0; i < NumberOfDays; i++) {
+            if (firstDayOfMonth.day() >= 1 && firstDayOfMonth.day() <= 5) {
+                dayOfWork++;
+            }
+            firstDayOfMonth = firstDayOfMonth.add(1, 'day');
+        }
+
+        return (dayOfWork - numberOfEvent) * 8;
     }
 }

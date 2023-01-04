@@ -117,7 +117,7 @@ Speech client : En tant qu'employé, je dois pouvoir afficher, sur la plateforme
 
 #### GET /users/:id/meal-vouchers/:month
 
-Speech client : En tant qu'enployé, je dois pouvoir voir le montant accordé en titres restaurant par l'entreprise pour un mois donné afin d'éviter des erreurs comptables dans le calculs des titres restaurants.
+Speech client : En tant qu'employé, je dois pouvoir voir le montant accordé en titres restaurant par l'entreprise pour un mois donné afin d'éviter des erreurs comptables dans le calculs des titres restaurants.
 
 Criteres d'acceptation : **Étant donné** que je suis un employé et que je travaille du Lundi au Vendredi sans interruption, et ce, même les jours féries,
 **lorsque** je demande mon montant de titres restaurant pour un mois donné

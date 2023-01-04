@@ -1,10 +1,11 @@
-import {Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn, Index} from 'typeorm';
 import {User} from "../users/user.entity";
 import {Project} from "../projects/project.entity";
 
 @Entity()
 export class ProjectUser extends BaseEntity{
     @PrimaryGeneratedColumn('uuid')
+    @Index({unique: true})
     id: string
 
     @Column()

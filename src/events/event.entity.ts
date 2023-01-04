@@ -1,9 +1,10 @@
-import {Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn, Index} from 'typeorm';
 import {User} from "../users/user.entity";
 
 @Entity()
 export class Event extends BaseEntity{
     @PrimaryGeneratedColumn('uuid')
+    @Index({unique: true})
     id: string
 
     @Column()
